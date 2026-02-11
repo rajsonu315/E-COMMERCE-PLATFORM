@@ -1,0 +1,163 @@
+version: '3.8'
+
+services:
+  # mysql: # Removed local mysql as we are using remote DB
+  #   image: mysql:8.0
+  #   container_name: ecommerce_mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: ecommerce_db
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #     - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+  #   networks:
+  #     - ecommerce-network
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+  auth-service:
+    build: ./services/auth-service
+    container_name: ecommerce_auth
+    environment:
+      - PORT=3000
+      - DB_HOST=193.203.184.198
+      - DB_USER=u976774997_ecommerce_stor
+      - DB_PASSWORD=ecommerce_storeA123
+      - DB_NAME=u976774997_ecommerce_stor
+      - JWT_SECRET=supersecretkey
+    ports:
+      - "3001:3000"
+    # depends_on:
+    #   mysql:
+    #     condition: service_healthy
+    networks:
+      - ecommerce-network
+
+  user-service:
+    build: ./services/user-service
+    container_name: ecommerce_user
+    environment:
+      - PORT=3000
+      - DB_HOST=193.203.184.198
+      - DB_USER=u976774997_ecommerce_stor
+      - DB_PASSWORD=ecommerce_storeA123
+      - DB_NAME=u976774997_ecommerce_stor
+      - JWT_SECRET=supersecretkey
+    ports:
+      - "3002:3000"
+    # depends_on:
+    #   mysql:
+    #     condition: service_healthy
+    networks:
+      - ecommerce-network
+
+  product-service:
+    build: ./services/product-service
+    container_name: ecommerce_product
+    environment:
+      - PORT=3000
+      - DB_HOST=193.203.184.198
+      - DB_USER=u976774997_ecommerce_stor
+      - DB_PASSWORD=ecommerce_storeA123
+      - DB_NAME=u976774997_ecommerce_stor
+    ports:
+      - "3003:3000"
+    # depends_on:
+    #   mysql:
+    #     condition: service_healthy
+    networks:
+      - ecommerce-network
+
+  cart-service:
+    build: ./services/cart-service
+    container_name: ecommerce_cart
+    environment:
+      - PORT=3000
+      - DB_HOST=193.203.184.198
+      - DB_USER=u976774997_ecommerce_stor
+      - DB_PASSWORD=ecommerce_storeA123
+      - DB_NAME=u976774997_ecommerce_stor
+    ports:
+      - "3004:3000"
+    # depends_on:
+    #   mysql:
+    #     condition: service_healthy
+    networks:
+      - ecommerce-network
+
+  order-service:
+    build: ./services/order-service
+    container_name: ecommerce_order
+    environment:
+      - PORT=3000
+      - DB_HOST=193.203.184.198
+      - DB_USER=u976774997_ecommerce_stor
+      - DB_PASSWORD=ecommerce_storeA123
+      - DB_NAME=u976774997_ecommerce_stor
+    ports:
+      - "3005:3000"
+    # depends_on:
+    #   mysql:
+    #     condition: service_healthy
+    networks:
+      - ecommerce-network
+
+  payment-service:
+    build: ./services/payment-service
+    container_name: ecommerce_payment
+    environment:
+      - PORT=3000
+      - DB_HOST=193.203.184.198
+      - DB_USER=u976774997_ecommerce_stor
+      - DB_PASSWORD=ecommerce_storeA123
+      - DB_NAME=u976774997_ecommerce_stor
+    ports:
+      - "3006:3000"
+    # depends_on:
+    #   mysql:
+    #     condition: service_healthy
+    networks:
+      - ecommerce-network
+
+  notification-service:
+    build: ./services/notification-service
+    container_name: ecommerce_notification
+    environment:
+      - PORT=3000
+      - DB_HOST=193.203.184.198
+      - DB_USER=u976774997_ecommerce_stor
+      - DB_PASSWORD=ecommerce_storeA123
+      - DB_NAME=u976774997_ecommerce_stor
+    ports:
+      - "3007:3000"
+    # depends_on:
+    #   mysql:
+    #     condition: service_healthy
+    networks:
+      - ecommerce-network
+
+  admin-frontend:
+    build: ./apps/admin-frontend
+    container_name: ecommerce_admin_frontend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth-service
+      - product-service
+      - order-service
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge
+
+# volumes:
+#   mysql_data:

@@ -1,0 +1,14 @@
+{
+  "name": "database-seeder",
+  "version": "1.0.0",
+  "description": "Database seeding script",
+  "main": "seed.js",
+  "scripts": {
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "mysql2": "^3.9.0",
+    "dotenv": "^16.4.1",
+    "bcryptjs": "^2.4.3"
+  }
+}

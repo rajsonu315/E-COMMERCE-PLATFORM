@@ -344,4 +344,4 @@ This project is complete and serves as a **high-level reference implementation**
 *   **Codebase Template**: A solid starting point for new Node.js microservice projects.
 
 ---
-*Built with ❤️ by Solo Builder.*
+*Built with ❤️ by Purushottam Kumar.*

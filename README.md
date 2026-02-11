@@ -3,6 +3,7 @@
 **Version:** 1.0.0  
 **Status:** Production-Grade Reference Implementation  
 **License:** MIT  
+**Author:** Purushottam Kumar
 
 ---
 
